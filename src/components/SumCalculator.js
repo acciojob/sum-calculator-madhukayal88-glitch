@@ -8,10 +8,10 @@ function SumCalculator() {
   const addNumber = () => {
     if (input.trim() === "") return;
 
-    const value = parseInt(input, 10);
+    const num = parseInt(input, 10);
 
-    if (!isNaN(value)) {
-      setNumbers((prev) => [...prev, value]);
+    if (!isNaN(num)) {
+      setNumbers((prev) => [...prev, num]);
     }
 
     setInput("");
@@ -19,7 +19,7 @@ function SumCalculator() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      const total = numbers.reduce((acc, num) => acc + num, 0);
+      const total = numbers.reduce((acc, curr) => acc + curr, 0);
       setSum(total);
     }, 0);
 
@@ -28,18 +28,19 @@ function SumCalculator() {
 
   return (
     <div className="container">
+      <h2>Sum Calculator</h2>
+
       <input
         type="number"
-        placeholder="Enter a number"
         value={input}
+        placeholder="Enter number"
         onChange={(e) => setInput(e.target.value)}
       />
 
-      <button onClick={addNumber}>Add Number</button>
+      <button onClick={addNumber}>Add</button>
 
-      <h2>Total Sum: {sum}</h2>
+      <h3>Total Sum: {sum}</h3>
 
-      <h3>Numbers:</h3>
       <ul>
         {numbers.map((num, index) => (
           <li key={index}>{num}</li>
