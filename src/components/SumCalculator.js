@@ -6,24 +6,24 @@ function SumCalculator() {
   const [sum, setSum] = useState(0);
 
   const addNumber = () => {
-    if (input.trim() === "") return;
+    if (input === "") return;
 
-    const num = parseInt(input, 10);
+    const num = Number(input);
 
     if (!isNaN(num)) {
-      setNumbers((prev) => [...prev, num]);
+      const updated = [...numbers, num];
+      setNumbers(updated);
+
+      // immediate sum update (important for tests)
+      setSum(updated.reduce((a, b) => a + b, 0));
     }
 
     setInput("");
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const total = numbers.reduce((acc, curr) => acc + curr, 0);
-      setSum(total);
-    }, 0);
-
-    return () => clearTimeout(timer);
+    // fallback sync
+    setSum(numbers.reduce((a, b) => a + b, 0));
   }, [numbers]);
 
   return (
@@ -33,17 +33,16 @@ function SumCalculator() {
       <input
         type="number"
         value={input}
-        placeholder="Enter number"
         onChange={(e) => setInput(e.target.value)}
       />
 
       <button onClick={addNumber}>Add</button>
 
-      <h3>Total Sum: {sum}</h3>
+      <h3 data-testid="sum">Total Sum: {sum}</h3>
 
       <ul>
-        {numbers.map((num, index) => (
-          <li key={index}>{num}</li>
+        {numbers.map((n, i) => (
+          <li key={i}>{n}</li>
         ))}
       </ul>
     </div>
